@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { setupRouterGuard } from './guards'
-import { staticRoutes } from './routes'
+import { dynamicRoutes, staticRoutes } from './routes'
 
 export const router = createRouter({
   history: createWebHistory(),
-  routes: staticRoutes,
+  routes: staticRoutes.concat(dynamicRoutes),
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
 

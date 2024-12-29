@@ -1,6 +1,7 @@
 <script setup>
 import { useAppStore } from '@/store'
 import Sidebar from './sidebar'
+import Header from '../components/header'
 
 const appStore = useAppStore()
 </script>
@@ -11,7 +12,12 @@ const appStore = useAppStore()
       <Sidebar />
     </div>
     <div w-0 flex-col flex-1>
-      <slot />
+      <Header />
+      <transition name="fade-slide" mode="out-in" appear>
+        <div flex-1 p-24 m-12 h-0>
+          <slot />
+        </div>
+      </transition>
     </div>
   </div>
 </template>

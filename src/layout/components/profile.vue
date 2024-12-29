@@ -25,25 +25,28 @@ function goProfile() {
 </script>
 
 <template>
-  <el-dropdown w-full>
+  <el-dropdown w-full trigger="click">
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" v-if="appStore.menuCollapsed" />
 
     <div v-else flex cursor-pointer items-center w-full justify-between>
       <div flex items-center>
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-        <div flex-col flex-shrink-0 pl-8>
-          <span text-14 mt-5>super</span>
-          <span text-12 mt-2>merchant-name</span>
-        </div>
+        <el-avatar shape="square" mr-5 />
+        <span text-16 mt-5 color-black>super</span>
       </div>
 
-      <div text-16 mt-8>
-        <i class="i-bi:chevron-expand" />
+      <div text-16 mt-8 ml-5>
+        <i class="i-bi:chevron-expand" color-black />
       </div>
     </div>
     <template #dropdown>
-      <el-dropdown-item @click="goProfile">账户资料</el-dropdown-item>
-      <el-dropdown-item divided @click="logout">退出登录</el-dropdown-item>
+      <el-dropdown-item @click="goProfile">
+        <i class="i-fluent:inprivate-account-16-regular" text-16 />
+        账户资料
+      </el-dropdown-item>
+      <el-dropdown-item @click="logout">
+        <i class="i-fluent:sign-out-20-filled" text-16 />
+        退出登录
+      </el-dropdown-item>
     </template>
   </el-dropdown>
 </template>

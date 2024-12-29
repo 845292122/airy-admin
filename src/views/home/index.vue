@@ -1,14 +1,7 @@
-<script setup>
-import AppContainer from '@/components/container'
-</script>
+<script setup></script>
 
 <template>
-  <AppContainer>
-    <template #action>
-      <el-button>action</el-button>
-    </template>
-    <div>home</div>
-  </AppContainer>
+  <div>home</div>
 </template>
 
 <style lang="scss" scoped></style>

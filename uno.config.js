@@ -9,10 +9,11 @@ export default defineConfig({
       warn: true,
       prefix: ['i-'],
       extraProperties: {
-        display: 'inline-block',
+        display: 'inline-block'
       },
+      autoInstall: true
     }),
-    presetRemToPx({ baseFontSize: 4 }),
+    presetRemToPx({ baseFontSize: 4 })
   ],
   shortcuts: [
     ['wh-full', 'w-full h-full'],
@@ -22,8 +23,8 @@ export default defineConfig({
     ['auto-bg-hover', 'hover:bg-#eaf0f1 hover:dark:bg-#1b2429'],
     [
       'icon-btn',
-      'text-16 inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-primary !outline-none',
-    ],
+      'text-16 inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-primary !outline-none'
+    ]
   ],
   rules: [
     [/^m-([\.\d]+)$/, ([_, num]) => ({ margin: `${num}px` })],
@@ -31,15 +32,14 @@ export default defineConfig({
     [
       'card-shadow',
       {
-        'box-shadow':
-          '0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000017',
-      },
-    ],
+        'box-shadow': '0 1px 2px -2px #00000029, 0 3px 6px #0000001f, 0 5px 12px 4px #00000017'
+      }
+    ]
   ],
   theme: {
     colors: {
       primary: '#0277fc',
-      dark: '#001628',
-    },
-  },
+      dark: '#001628'
+    }
+  }
 })

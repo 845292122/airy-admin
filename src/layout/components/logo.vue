@@ -14,5 +14,3 @@ const title = import.meta.env.VITE_APP_TITLE
     </h2>
   </div>
 </template>
-
-<style lang="scss" scoped></style>
