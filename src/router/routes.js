@@ -51,7 +51,7 @@ export const dynamicRoutes = [
         component: () => import('@/views/system/account/index.vue'),
         requireAdmin: true,
         meta: {
-          title: '账户管理',
+          title: '用户管理',
           icon: 'bi:person-vcard-fill'
         }
       }

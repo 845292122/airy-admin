@@ -3,10 +3,15 @@ import { useAppStore, useAuthStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import MenuItem from './menu-item'
 
+// TODO: 测试用,待删除
+import { dynamicRoutes } from '@/router/routes'
+
 const authStore = useAuthStore()
 const appStore = useAppStore()
 
-const { permRoutes } = storeToRefs(authStore)
+// const { permRoutes } = storeToRefs(authStore)
+
+const permRoutes = dynamicRoutes
 </script>
 
 <template>
