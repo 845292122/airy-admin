@@ -21,17 +21,18 @@ export default defineConfig(({ mode, command }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
-        '~': path.resolve(__dirname, './'),
+        '~': path.resolve(__dirname, './')
       },
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
     plugins: loadPlugins(env, isBuild),
     css: {
       preprocessorOptions: {
         scss: {
           additionalData: '@use "@/styles/index.scss" as *;',
-        },
-      },
+          api: 'modern'
+        }
+      }
     },
     server: {
       host: '0.0.0.0',
@@ -42,15 +43,14 @@ export default defineConfig(({ mode, command }) => {
           target: 'http://localhost:3000',
           changeOrigin: true,
           ws: true,
-          rewrite: (path) =>
-            path.replace(new RegExp('^' + env.VITE_APP_BASE_API), ''),
-        },
-      },
+          rewrite: path => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
+        }
+      }
     },
     build: {
       target: 'es2015',
       reportCompressedSize: false, // 启用/禁用 gzip 压缩大小报告
-      chunkSizeWarningLimit: 1024, // chunk 大小警告的限制（单位kb）
-    },
+      chunkSizeWarningLimit: 1024 // chunk 大小警告的限制（单位kb）
+    }
   }
 })
