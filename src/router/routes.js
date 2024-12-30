@@ -38,7 +38,7 @@ export const dynamicRoutes = [
   {
     name: 'system',
     path: '/system',
-    redirect: '/system/account',
+    redirect: '/system/user',
     requireAdmin: true,
     meta: {
       title: '系统管理',
@@ -46,13 +46,43 @@ export const dynamicRoutes = [
     },
     children: [
       {
-        name: 'system-account',
-        path: '/system/account',
-        component: () => import('@/views/system/account/index.vue'),
+        name: 'system-user',
+        path: '/system/user',
+        component: () => import('@/views/system/user.vue'),
         requireAdmin: true,
         meta: {
           title: '用户管理',
           icon: 'bi:person-vcard-fill'
+        }
+      },
+      {
+        name: 'system-role',
+        path: '/system/role',
+        component: () => import('@/views/system/role.vue'),
+        requireAdmin: true,
+        meta: {
+          title: '角色管理',
+          icon: 'bi:person-badge-fill'
+        }
+      },
+      {
+        name: 'system-perm',
+        path: '/system/perm',
+        component: () => import('@/views/system/permission.vue'),
+        requireAdmin: true,
+        meta: {
+          title: '权限管理',
+          icon: 'bi:shield-lock-fill'
+        }
+      },
+      {
+        name: 'system-tenant',
+        path: '/system/tenant',
+        component: () => import('@/views/system/tenant.vue'),
+        requireAdmin: true,
+        meta: {
+          title: '租户管理',
+          icon: 'bi:person-circle'
         }
       }
     ]

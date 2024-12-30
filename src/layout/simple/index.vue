@@ -25,5 +25,7 @@ const appStore = useAppStore()
 <style lang="scss" scoped>
 .aside-wrapper {
   box-shadow: 1px 0 5px 1px rgba(0, 0, 0, 0.3);
+  background-color: #001628;
+  border-right: 1px solid #001628;
 }
 </style>
