@@ -1,7 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router'
 
-const locale = ref('zh-cn')
 const btnConfig = reactive({
   autoInsertSpace: true
 })
@@ -24,7 +23,7 @@ const Layout = computed(() => {
 </script>
 
 <template>
-  <el-config-provider :locale="locale" :button="btnConfig">
+  <el-config-provider :button="btnConfig">
     <router-view v-slot="{ Component, route: curRoute }">
       <component :is="Layout">
         <component :is="Component" :key="curRoute.fullPath" />
