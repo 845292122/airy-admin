@@ -48,7 +48,7 @@ export const dynamicRoutes = [
       {
         name: 'system-user',
         path: '/system/user',
-        component: () => import('@/views/system/user.vue'),
+        component: () => import('@/views/system/user/index.vue'),
         requireAdmin: true,
         meta: {
           title: '用户管理',
@@ -58,7 +58,7 @@ export const dynamicRoutes = [
       {
         name: 'system-role',
         path: '/system/role',
-        component: () => import('@/views/system/role.vue'),
+        component: () => import('@/views/system/role/index.vue'),
         requireAdmin: true,
         meta: {
           title: '角色管理',
@@ -68,7 +68,7 @@ export const dynamicRoutes = [
       {
         name: 'system-perm',
         path: '/system/perm',
-        component: () => import('@/views/system/permission.vue'),
+        component: () => import('@/views/system/permission/index.vue'),
         requireAdmin: true,
         meta: {
           title: '权限管理',
@@ -78,7 +78,7 @@ export const dynamicRoutes = [
       {
         name: 'system-tenant',
         path: '/system/tenant',
-        component: () => import('@/views/system/tenant.vue'),
+        component: () => import('@/views/system/tenant/index.vue'),
         requireAdmin: true,
         meta: {
           title: '租户管理',
