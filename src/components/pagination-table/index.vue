@@ -34,7 +34,7 @@ function handleSelectionChange(selection) {
     background
     layout="prev, pager, next"
     :total="props.pageInfo.total"
-    v-model:current-page="props.pageInfo.current"
-    :page-count="props.pageInfo.pages"
+    :current-page="props.pageInfo.pageNo"
+    :page-count="props.pageInfo.pageSize"
   />
 </template>

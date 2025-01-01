@@ -36,14 +36,13 @@ service.interceptors.request.use(
  */
 service.interceptors.response.use(
   resp => {
-    const code = resp.data.code || 200
-    const msg = resp.data.msg
+    const code = resp?.data?.code || 200
+    const result = code === 200 ? resp.data : resp.data.msg
 
     if (resp.request.responseType === 'blob' || resp.request.responseType === 'arraybuffer') {
       return resp.data
     }
 
-    debugger
     if (code === 401) {
       if (isRelogin) return
       isRelogin = true
@@ -60,12 +59,12 @@ service.interceptors.response.use(
         .catch(() => (isRelogin = false))
     } else if (code === 403) {
       ElMessage.warning('权限不足,请联系管理员!')
-      return Promise.reject(new Error(msg))
+      return Promise.reject(new Error(result))
     } else if (code !== 200) {
-      ElNotification.error({ title: msg })
+      ElMessage.error(result)
       return Promise.reject('error')
     } else {
-      return Promise.resolve(resp.data?.data)
+      return Promise.resolve(result)
     }
   },
   err => {

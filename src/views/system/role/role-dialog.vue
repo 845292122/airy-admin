@@ -1,35 +1,34 @@
 <script setup>
+import { RoleApi } from '@/api'
+
 defineExpose({ openDialog })
 const emit = defineEmits(['refresh'])
 
 const dialogFlag = ref(false)
 const formRef = ref()
-const formModal = ref({
-  id: undefined,
-  name: undefined,
-  status: 1
-})
+const formModal = ref({})
 
 function closeDialog() {
   dialogFlag.value = false
 }
 
-function openDialog() {
+function openDialog(roleData) {
+  formModal.value = roleData ?? { status: 1 }
   dialogFlag.value = true
 }
 
 async function onSubmit() {
-  // if (accountForm.value.id) {
-  //   await $AccountApi.modifyAccount(accountForm.value)
-  //   ElMessage.success('修改成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // } else {
-  //   await $AccountApi.createAccount(accountForm.value)
-  //   ElMessage.success('添加成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // }
+  if (formModal.value.id) {
+    await RoleApi.modifyRole(formModal.value)
+    ElMessage.success('修改成功')
+    emit('refresh')
+    closeDialog()
+  } else {
+    await RoleApi.createRole(formModal.value)
+    ElMessage.success('添加成功')
+    emit('refresh')
+    closeDialog()
+  }
 }
 </script>
 
@@ -46,6 +45,9 @@ async function onSubmit() {
     <el-form :modal="formModal" ref="formRef" label-width="80px">
       <el-form-item prop="name" label="名称">
         <el-input v-model="formModal.name" placeholder="请输入角色名称" />
+      </el-form-item>
+      <el-form-item prop="key" label="标识符">
+        <el-input v-model="formModal.key" placeholder="请输入标识符" />
       </el-form-item>
       <el-form-item prop="status" label="状态">
         <el-radio-group v-model="formModal.status">
