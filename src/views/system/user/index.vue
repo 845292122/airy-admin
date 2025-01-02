@@ -91,12 +91,6 @@ loadRecords()
       </template>
       新增
     </el-button>
-    <el-button type="danger" plain disabled>
-      <template #icon>
-        <i-bi:trash />
-      </template>
-      删除
-    </el-button>
   </el-space>
   <PaginationTable :tableData="tableData" :loading="loading" :pageInfo="pageInfo">
     <el-table-column prop="id" label="ID" />
