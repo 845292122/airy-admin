@@ -1,4 +1,6 @@
 <script setup>
+import { PermissionApi } from '@/api'
+
 defineExpose({ openDialog })
 const emit = defineEmits(['refresh'])
 
@@ -14,22 +16,21 @@ function closeDialog() {
   dialogFlag.value = false
 }
 
-function openDialog() {
+function openDialog(data) {
+  formModal.value = data ?? { status: 1 }
   dialogFlag.value = true
 }
 
 async function onSubmit() {
-  // if (accountForm.value.id) {
-  //   await $AccountApi.modifyAccount(accountForm.value)
-  //   ElMessage.success('修改成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // } else {
-  //   await $AccountApi.createAccount(accountForm.value)
-  //   ElMessage.success('添加成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // }
+  if (formModal.value.id) {
+    await PermissionApi.modifyPermission(formModal.value)
+    ElMessage.success('修改成功')
+  } else {
+    await PermissionApi.createPermission(formModal.value)
+    ElMessage.success('添加成功')
+  }
+  emit('refresh')
+  closeDialog()
 }
 </script>
 
@@ -44,8 +45,8 @@ async function onSubmit() {
     @closed="closeDialog"
   >
     <el-form :modal="formModal" ref="formRef" label-width="80px">
-      <el-form-item prop="name" label="权限">
-        <el-input v-model="formModal.name" placeholder="请输入权限标识符" />
+      <el-form-item prop="permission" label="权限">
+        <el-input v-model="formModal.permission" placeholder="请输入权限标识符" />
       </el-form-item>
       <el-form-item prop="status" label="状态">
         <el-radio-group v-model="formModal.status">
