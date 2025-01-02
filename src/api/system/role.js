@@ -4,8 +4,8 @@ const baseURL = '/system/role'
 
 export const RoleApi = {
   getRoleList: params => service.get(`${baseURL}/list`, { params }),
-  getRoleInfo: rid => service.get(`${baseURL}/${rid}`),
+  getRoleInfo: id => service.get(`${baseURL}/${id}`),
   createRole: data => service.post(`${baseURL}`, data),
   modifyRole: data => service.put(`${baseURL}`, data),
-  removeRole: rid => service.delete(`${baseURL}/${rid}`)
+  removeRole: id => service.delete(`${baseURL}/${id}`)
 }
