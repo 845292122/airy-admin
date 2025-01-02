@@ -1,4 +1,6 @@
 <script setup>
+import { TenantApi } from '@/api'
+
 defineExpose({ openDialog })
 const emit = defineEmits(['refresh'])
 
@@ -26,22 +28,21 @@ function closeDialog() {
   dialogFlag.value = false
 }
 
-function openDialog() {
+function openDialog(data) {
+  formModal.value = data ?? { status: 1 }
   dialogFlag.value = true
 }
 
 async function onSubmit() {
-  // if (accountForm.value.id) {
-  //   await $AccountApi.modifyAccount(accountForm.value)
-  //   ElMessage.success('修改成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // } else {
-  //   await $AccountApi.createAccount(accountForm.value)
-  //   ElMessage.success('添加成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // }
+  if (formModal.value.id) {
+    await TenantApi.modifyTenant(formModal.value)
+    ElMessage.success('修改成功')
+  } else {
+    await TenantApi.createTenant(formModal.value)
+    ElMessage.success('添加成功')
+  }
+  emit('refresh')
+  closeDialog()
 }
 </script>
 
@@ -55,7 +56,7 @@ async function onSubmit() {
     :close-on-press-escape="false"
     @closed="closeDialog"
   >
-    <el-form :modal="formModal" ref="formRef" label-width="80px">
+    <el-form :modal="formModal" ref="formRef" label-width="120px">
       <el-form-item prop="name" label="租户名称">
         <el-input v-model="formModal.name" placeholder="请输入租户名称" />
       </el-form-item>

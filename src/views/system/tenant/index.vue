@@ -1,8 +1,11 @@
 <script setup>
 import PaginationTable from '@/components/pagination-table'
 import TenantDialog from './tenant-dialog'
+import { dayjs } from 'element-plus'
+import { TenantApi } from '@/api'
 
 const dialogRef = ref()
+const queryFormRef = ref()
 const queryForm = ref({
   name: undefined,
   contact: undefined,
@@ -13,13 +16,46 @@ const tableData = ref([])
 const loading = ref(false)
 const pageInfo = ref({
   total: 0,
-  current: undefined,
-  pages: undefined
+  pageNo: undefined,
+  pageSize: undefined
 })
+
+function loadRecords() {
+  loading.value = true
+  TenantApi.getTenantList({ ...queryForm.value, ...pageInfo.value })
+    .then(res => {
+      tableData.value = res.records
+      pageInfo.value.total = res.total
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+
+function handleQuery() {
+  queryForm.value.pageNo = 1
+  loadRecords()
+}
+
+function handleReset() {
+  queryFormRef.value.resetFields()
+}
 
 function handleAdd() {
   dialogRef.value.openDialog(null)
 }
+
+async function handleEdit(id) {
+  const tenantInfo = await TenantApi.getRoleInfo(id)
+  dialogRef.value.openDialog(tenantInfo)
+}
+
+async function handleRemove(id) {
+  await TenantApi.removeTenant(id)
+  ElMessage.success('删除成功')
+  loadRecords()
+}
+loadRecords()
 </script>
 
 <template>
@@ -65,12 +101,6 @@ function handleAdd() {
       </template>
       新增
     </el-button>
-    <el-button type="danger" plain disabled>
-      <template #icon>
-        <i-bi:trash />
-      </template>
-      删除
-    </el-button>
   </el-space>
 
   <PaginationTable :tableData="tableData" :loading="loading" :pageInfo="pageInfo">
@@ -112,22 +142,36 @@ function handleAdd() {
     </el-table-column>
     <el-table-column label="操作" align="center" width="100" fixed="right">
       <template #default="scope">
-        <el-tooltip content="修改" placement="top" v-if="scope.row.id != 1">
-          <el-button link type="primary" @click="handleEdit(scope.row.id)">
-            <template #icon>
-              <i-bi:highlighter />
+        <div flex justify-evenly>
+          <el-tooltip content="修改" placement="top">
+            <el-button link type="primary" @click="handleEdit(scope.row.id)">
+              <template #icon>
+                <i-bi:highlighter />
+              </template>
+            </el-button>
+          </el-tooltip>
+
+          <el-popconfirm
+            title="确认删除角色?"
+            confirm-button-text="确认"
+            cancel-button-text="取消"
+            @confirm="handleRemove(scope.row.id)"
+          >
+            <template #reference>
+              <div>
+                <el-tooltip content="删除" placement="top">
+                  <el-button link type="primary">
+                    <template #icon>
+                      <i-bi:trash />
+                    </template>
+                  </el-button>
+                </el-tooltip>
+              </div>
             </template>
-          </el-button>
-        </el-tooltip>
-        <el-tooltip content="删除" placement="top" v-if="scope.row.id != 1">
-          <el-button link type="primary" @click="handleRemove(scope.row.id)">
-            <template #icon>
-              <i-bi:trash />
-            </template>
-          </el-button>
-        </el-tooltip>
+          </el-popconfirm>
+        </div>
       </template>
     </el-table-column>
   </PaginationTable>
-  <TenantDialog ref="dialogRef" />
+  <TenantDialog ref="dialogRef" @refresh="loadRecords" />
 </template>
