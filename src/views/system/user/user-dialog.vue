@@ -1,36 +1,32 @@
 <script setup>
+import { UserApi } from '@/api'
+
 defineExpose({ openDialog })
 const emit = defineEmits(['refresh'])
 
 const dialogFlag = ref(false)
 const formRef = ref()
-const formModal = ref({
-  id: undefined,
-  name: undefined,
-  phone: undefined,
-  status: 1
-})
+const formModal = ref({})
 
 function closeDialog() {
   dialogFlag.value = false
 }
 
-function openDialog() {
+function openDialog(data) {
+  formModal.value = data ?? { status: 1 }
   dialogFlag.value = true
 }
 
 async function onSubmit() {
-  // if (accountForm.value.id) {
-  //   await $AccountApi.modifyAccount(accountForm.value)
-  //   ElMessage.success('修改成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // } else {
-  //   await $AccountApi.createAccount(accountForm.value)
-  //   ElMessage.success('添加成功')
-  //   emit('refresh')
-  //   closeDialog()
-  // }
+  if (formModal.value.id) {
+    await UserApi.modifyUser(formModal.value)
+    ElMessage.success('修改成功')
+  } else {
+    await UserApi.createUser(formModal.value)
+    ElMessage.success('添加成功')
+  }
+  emit('refresh')
+  closeDialog()
 }
 </script>
 

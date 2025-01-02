@@ -1,8 +1,11 @@
 <script setup>
 import PaginationTable from '@/components/pagination-table'
 import UserDialog from './user-dialog'
+import { UserApi } from '@/api'
+import { dayjs } from 'element-plus'
 
 const dialogRef = ref()
+const queryFormRef = ref()
 const queryForm = ref({
   name: undefined,
   status: undefined
@@ -11,13 +14,48 @@ const tableData = ref([])
 const loading = ref(false)
 const pageInfo = ref({
   total: 0,
-  current: undefined,
-  pages: undefined
+  pageNo: undefined,
+  pageSize: undefined
 })
+
+function loadRecords() {
+  loading.value = true
+  UserApi.getUserList({ ...queryForm.value, ...pageInfo.value })
+    .then(res => {
+      tableData.value = res.records
+      pageInfo.value.total = res.total
+      loading.value = false
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
+
+function handleQuery() {
+  queryForm.value.pageNo = 1
+  loadRecords()
+}
+
+function handleReset() {
+  queryFormRef.value.resetFields()
+}
 
 function handleAdd() {
   dialogRef.value.openDialog(null)
 }
+
+async function handleEdit(id) {
+  const userInfo = await UserApi.getUserInfo(id)
+  dialogRef.value.openDialog(userInfo)
+}
+
+async function handleRemove(id) {
+  await UserApi.removeUser(id)
+  ElMessage.success('删除成功')
+  loadRecords()
+}
+
+loadRecords()
 </script>
 
 <template>
@@ -77,22 +115,36 @@ function handleAdd() {
     </el-table-column>
     <el-table-column label="操作" align="center" width="100" fixed="right">
       <template #default="scope">
-        <el-tooltip content="修改" placement="top" v-if="scope.row.id != 1">
-          <el-button link type="primary" @click="handleEdit(scope.row.id)">
-            <template #icon>
-              <i-bi:highlighter />
+        <div flex justify-evenly>
+          <el-tooltip content="修改" placement="top" v-if="scope.row.id != 1">
+            <el-button link type="primary" @click="handleEdit(scope.row.id)">
+              <template #icon>
+                <i-bi:highlighter />
+              </template>
+            </el-button>
+          </el-tooltip>
+
+          <el-popconfirm
+            title="确认删除用户?"
+            confirm-button-text="确认"
+            cancel-button-text="取消"
+            @confirm="handleRemove(scope.row.id)"
+          >
+            <template #reference>
+              <div>
+                <el-tooltip content="删除" placement="top" v-if="scope.row.id != 1">
+                  <el-button link type="primary">
+                    <template #icon>
+                      <i-bi:trash />
+                    </template>
+                  </el-button>
+                </el-tooltip>
+              </div>
             </template>
-          </el-button>
-        </el-tooltip>
-        <el-tooltip content="删除" placement="top" v-if="scope.row.id != 1">
-          <el-button link type="primary" @click="handleRemove(scope.row.id)">
-            <template #icon>
-              <i-bi:trash />
-            </template>
-          </el-button>
-        </el-tooltip>
+          </el-popconfirm>
+        </div>
       </template>
     </el-table-column>
   </PaginationTable>
-  <UserDialog ref="dialogRef" />
+  <UserDialog ref="dialogRef" @refresh="loadRecords" />
 </template>

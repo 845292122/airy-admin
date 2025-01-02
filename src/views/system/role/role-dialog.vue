@@ -12,8 +12,8 @@ function closeDialog() {
   dialogFlag.value = false
 }
 
-function openDialog(roleData) {
-  formModal.value = roleData ?? { status: 1 }
+function openDialog(data) {
+  formModal.value = data ?? { status: 1 }
   dialogFlag.value = true
 }
 
@@ -21,14 +21,12 @@ async function onSubmit() {
   if (formModal.value.id) {
     await RoleApi.modifyRole(formModal.value)
     ElMessage.success('修改成功')
-    emit('refresh')
-    closeDialog()
   } else {
     await RoleApi.createRole(formModal.value)
     ElMessage.success('添加成功')
-    emit('refresh')
-    closeDialog()
   }
+  emit('refresh')
+  closeDialog()
 }
 </script>
 

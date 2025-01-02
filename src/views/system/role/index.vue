@@ -20,11 +20,14 @@ const pageInfo = ref({
 
 function loadRecords() {
   loading.value = true
-  RoleApi.getRoleList({ ...queryForm.value, ...pageInfo.value }).then(res => {
-    tableData.value = res.records
-    pageInfo.value.total = res.total
-    loading.value = false
-  })
+  RoleApi.getRoleList({ ...queryForm.value, ...pageInfo.value })
+    .then(res => {
+      tableData.value = res.records
+      pageInfo.value.total = res.total
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 function handleQuery() {
@@ -40,13 +43,13 @@ function handleAdd() {
   dialogRef.value.openDialog(null)
 }
 
-async function handleEdit(roleId) {
-  const roleInfo = await RoleApi.getRoleInfo(roleId)
+async function handleEdit(id) {
+  const roleInfo = await RoleApi.getRoleInfo(id)
   dialogRef.value.openDialog(roleInfo)
 }
 
-async function handleRemove(roleId) {
-  await RoleApi.removeRole(roleId)
+async function handleRemove(id) {
+  await RoleApi.removeRole(id)
   ElMessage.success('删除成功')
   loadRecords()
 }
